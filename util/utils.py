@@ -69,7 +69,7 @@ def interact_with_user():
                 print(f"База данных {name_db} и таблицы  созданы")
             elif choice == "2":
                 try:
-                    csv_filename = "csv_data.csv"
+                    csv_filename = "csv_data_.csv"
                     df = pd.read_csv(csv_filename)
                 except FileNotFoundError:
                     print(Fore.RED + "Нет файла, загрузите файл")
