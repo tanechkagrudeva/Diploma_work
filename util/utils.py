@@ -48,7 +48,7 @@ def interact_with_user():
             create_database(params)
             print(Fore.RED + "Перезапустите программу")
         except psycopg2.OperationalError:
-            print(Fore.RED + "Проверьте фаервол")
+            print(Fore.RED + "Проверьте файрвол")
 
     else:
         while True:
