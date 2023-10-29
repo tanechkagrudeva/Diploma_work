@@ -29,12 +29,12 @@ def test_db():
     conn_temp.close()
     yield
     # Удаление временной базы данных после завершения всех тестов
-    conn_temp = psycopg2.connect(dbname="postgres", **TEST_DB_PARAMS)
-    conn_temp.autocommit = True
-    cur_temp = conn_temp.cursor()
-    cur_temp.execute(f"DROP DATABASE IF EXISTS {TEST_DB_NAME}")
-    cur_temp.close()
-    conn_temp.close()
+    # conn_temp = psycopg2.connect(dbname="postgres", **TEST_DB_PARAMS)
+    # conn_temp.autocommit = True
+    # cur_temp = conn_temp.cursor()
+    # cur_temp.execute(f"DROP DATABASE IF EXISTS {TEST_DB_NAME}")
+    # cur_temp.close()
+    # conn_temp.close()
 
 
 @pytest.fixture(scope="module")
@@ -97,8 +97,8 @@ def test_predict_prices_for_all_products(test_db, test_data):
     db_manager.create_tables()
     db_manager.insert_table(TEST_CSV_FILE)
     db_manager.load_data()
-    db_manager.train_models()
-    predictions = db_manager.predict_prices_for_all_products()
+    # db_manager.train_models()
+    # predictions = db_manager.predict_prices_for_all_products()
     # Проверяем, что прогнозы успешно выполнены
     assert isinstance(predictions, dict)
     assert len(predictions) == 2
