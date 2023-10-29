@@ -55,27 +55,12 @@ def interact_with_user():
             # Запускаем бесконечный цикл для работы меню
             print(Fore.GREEN + "Выберите действие:")
 
-            print(
-                Fore.RED
-                + "1 - Пересоздание базы данных и таблиц (Осторожно, старая БД будет удалена!"
-            )
+            print(Fore.RED + "1 - Пересоздание базы данных и таблиц (Осторожно, старая БД будет удалена!")
             print(Fore.CYAN + "2 - Заполняем таблицу БД данными из cvs файла")
-            print(Fore.MAGENTA + "3 - Прогнозирование цен методом линейной регрессии")
-            print(Fore.MAGENTA + "4 - Прогнозирование цен методом случайных деревьев")
-            print(
-                Fore.MAGENTA
-                + "5 - Прогнозирование цен самым простым методом, подсчета средней цены"
-            )
-            print(
-                Fore.YELLOW
-                + "6 - Вывод  максимальной и минимальной цены по каждому товару "
-            )
-            print(Fore.YELLOW + "7 - Вывод  количества записей для каждого продукта")
-            print(
-                Fore.YELLOW
-                + "8 -  Вывод краткой справки о методах прогноза цен (Справка)"
-            )
-            print(Fore.RED + "9 - Выйти")
+            print(Fore.MAGENTA + "3 - Прогнозирование цен самым простым методом, подсчета средней цены")
+            print(Fore.YELLOW + "4 - Вывод  максимальной и минимальной цены по каждому товару ")
+            print(Fore.YELLOW + "5 - Вывод  количества записей для каждого продукта")
+            print(Fore.RED + "6 - Выйти")
             choice = input(Fore.GREEN + "Введите значение---")
 
             # Непосредственно работы меню выбора
@@ -102,52 +87,8 @@ def interact_with_user():
                         print(Fore.GREEN + f"Всего в базе {len(df)} элементов")
                         db_manager.insert_table(csv_filename)
                         print("Таблицы заполнены")
+
             elif choice == "3":
-                try:
-                    db_manager.load_data()
-                    db_manager.train_models()
-                    # Прогнозирование цен для всех продуктов
-                    all_predictions = db_manager.predict_prices_for_all_products()
-                    if all_predictions == {}:
-                        print(Fore.RED + "Ошибка - Заполните таблицу данными")
-                    # Вывод результатов
-                    for product, price in all_predictions.items():
-                        mse = (
-                            db_manager.mse_scores.get(product, None) / db_manager.number
-                        )
-                        print(
-                            Fore.GREEN + f"Прогнозируемая цена на {product}: {price}, "
-                            f"среднее отклонение {round((mse / price) * 100, 2)} процентов"
-                        )
-                except psycopg2.errors.UndefinedTable:
-                    print(Fore.RED + "Ошибка - Создайте таблицу")
-                except psycopg2.errors.InFailedSqlTransaction:
-                    print(Fore.RED + "Ошибка - Создайте таблицу")
-
-            elif choice == "4":
-                try:
-                    db_manager.load_data()
-                    db_manager.train_models__not_line()
-                    # Прогнозирование цен для всех продуктов
-                    all_predictions = db_manager.predict_prices_for_all_products()
-                    if all_predictions == {}:
-                        print(Fore.RED + "Ошибка - Заполните таблицу данными")
-                    # Вывод результатов
-                    for product, price in all_predictions.items():
-                        mse = (
-                            db_manager.mse_scores.get(product, None)
-                            / db_manager.number_not_line
-                        )
-                        print(
-                            Fore.GREEN + f"Прогнозируемая цена на {product}: {price}, "
-                            f"среднее отклонение {round((mse / price) * 100, 2)} процентов"
-                        )
-                except psycopg2.errors.UndefinedTable:
-                    print(Fore.RED + "Ошибка - Создайте таблицу")
-                except psycopg2.errors.InFailedSqlTransaction:
-                    print(Fore.RED + "Ошибка - Создайте таблицу")
-
-            elif choice == "5":
                 try:
                     db_manager.load_data()
                     average_prices = db_manager.get_average_prices_for_each_product()
@@ -161,7 +102,7 @@ def interact_with_user():
                 except psycopg2.errors.InFailedSqlTransaction:
                     print(Fore.RED + "Ошибка - Создайте таблицу")
 
-            elif choice == "6":
+            elif choice == "4":
                 try:
                     db_manager.load_data()
                     max_min_prices = db_manager.get_max_min_price_for_each_product()
@@ -176,7 +117,7 @@ def interact_with_user():
                 except psycopg2.errors.InFailedSqlTransaction:
                     print(Fore.RED + "Ошибка - Создайте таблицу")
 
-            elif choice == "7":
+            elif choice == "5":
                 try:
                     db_manager.load_data()
                     record_counts = db_manager.get_record_count_for_each_product()
@@ -193,27 +134,7 @@ def interact_with_user():
                 except UnboundLocalError:
                     print(Fore.RED + "Ошибка - трассировка")
 
-            elif choice == "8":
-                print(
-                    "Линейная регрессия (англ. Linear regression) — используемая в статистике регрессионная "
-                    "модель зависимости одной (объясняемой, зависимой) переменной y от другой "
-                    "или нескольких других переменных (факторов, регрессоров, "
-                    "независимых переменных) x с линейной функцией зависимости."
-                )
-                print(
-                    "Подробнее https://ru.wikipedia.org/wiki/%D0%9B%D0%B8%D0%BD%D0%B5%D0%B9%D0%BD%D0%B0%D1%8F"
-                    "_%D1%80%D0%B5%D0%B3%D1%80%D0%B5%D1%81%D1%81%D0%B8%D1%8F"
-                )
-                print(
-                    "Метод случайного леса (RandomForestRegressor)"
-                    " - алгоритм предсказания использующим модели случайных деревьев"
-                )
-                print(
-                    "Подробнее https://ru.wikipedia.org/wiki/"
-                    "%D0%9C%D0%B5%D1%82%D0%BE%D0%B4_%D1%81%D0%BB%D1%83%D1%87%D0%B0%D0%B9%"
-                    "D0%BD%D0%BE%D0%B3%D0%BE_%D0%BB%D0%B5%D1%81%D0%B0"
-                )
-            elif choice == "9":
+            elif choice == "6":
                 # Выход
                 db_manager.close_connection()
                 print(Fore.YELLOW + "--------------")

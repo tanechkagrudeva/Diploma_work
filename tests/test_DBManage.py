@@ -1,7 +1,5 @@
 import pytest
 import os
-import pytest
-import os
 import pandas as pd
 import psycopg2
 from scr.DBManage import DBManage
@@ -92,30 +90,6 @@ def test_load_data(test_db, test_data):
     # Проверяем, что данные успешно загружены
     assert isinstance(db_manager.data, pd.DataFrame)
     assert len(db_manager.data) == 6
-
-
-def test_train_models(test_db, test_data):
-    """Тест обучения модели"""
-    db_manager = DBManage(TEST_DB_NAME, TEST_DB_PARAMS)
-    db_manager.create_tables()
-    db_manager.insert_table(TEST_CSV_FILE)
-    db_manager.load_data()
-    db_manager.train_models()
-    # Проверяем, что модели успешно обучены
-    assert len(db_manager.models) == 2
-    assert len(db_manager.mse_scores) == 2
-
-
-def test_train_models_not_line(test_db, test_data):
-    """Тест обучения модели, дерева"""
-    db_manager = DBManage(TEST_DB_NAME, TEST_DB_PARAMS)
-    db_manager.create_tables()
-    db_manager.insert_table(TEST_CSV_FILE)
-    db_manager.load_data()
-    db_manager.train_models__not_line()
-    # Проверяем, что модели (не линейные) успешно обучены
-    assert len(db_manager.models) == 2
-    assert len(db_manager.mse_scores) == 2
 
 
 def test_predict_prices_for_all_products(test_db, test_data):

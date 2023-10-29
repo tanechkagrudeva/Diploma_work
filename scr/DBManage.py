@@ -1,11 +1,8 @@
 import warnings
 import pandas as pd
 import psycopg2
-from sklearn.ensemble import RandomForestRegressor
 from sklearn.exceptions import DataConversionWarning
-from sklearn.model_selection import train_test_split
-from sklearn.linear_model import LinearRegression
-from sklearn.metrics import mean_squared_error
+
 
 
 # Игнорирование всех предупреждений от scikit-learn
@@ -89,50 +86,6 @@ class DBManage:
         data = self.cur.fetchall()
         self.data = pd.DataFrame(data, columns=columns)
 
-    def train_models(self):
-        """Разделение данных по продуктам и обучение моделей, линейная регрессия"""
-        unique_products = self.data[
-            "product"
-        ].unique()  # Выборка уникальных значений продуктов
-
-        for product in unique_products:
-            product_data = self.data[self.data["product"] == product]
-            X = product_data[["count", "add_cost"]]
-            y = product_data["price"]
-            X_train, X_test, y_train, y_test = train_test_split(
-                X, y, test_size=0.2, random_state=10
-            )
-            # Вывод количества точек данных
-            self.number = len(X_train)
-            model = LinearRegression()
-            model.fit(X_train.values, y_train)
-            self.models[product] = model
-            y_pred = model.predict(X_test)
-            mse = mean_squared_error(y_test, y_pred)
-            self.mse_scores[product] = mse
-
-    def train_models__not_line(self):
-        """Разделение данных по продуктам и обучение моделей, не линейная регрессия"""
-        unique_products = self.data[
-            "product"
-        ].unique()  # Выборка уникальных значений продуктов
-
-        for product in unique_products:
-            product_data = self.data[self.data["product"] == product]
-            X = product_data[["count", "add_cost"]]
-            y = product_data["price"]
-            X_train, X_test, y_train, y_test = train_test_split(
-                X, y, test_size=0.2, random_state=10
-            )
-            # Вывод количества точек данных
-            self.number_not_line = len(X_train)
-            # n_estimators количество деревьев предсказания, max_depth сложность дерева
-            model = RandomForestRegressor(n_estimators=10, max_depth=5, random_state=10)
-            model.fit(X_train, y_train)
-            self.models[product] = model
-            y_pred = model.predict(X_test)
-            mse = mean_squared_error(y_test, y_pred)
-            self.mse_scores[product] = mse
 
     def predict_prices_for_all_products(self):
         """Прогнозирование цен для всех продуктов"""

@@ -1,7 +1,6 @@
 from util.utils import WelcomeMessage, interact_with_user
 from colorama import init, Fore
 
-# Для WIN10+
 init(autoreset=True)
 
 if __name__ == "__main__":

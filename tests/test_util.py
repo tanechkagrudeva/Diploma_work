@@ -20,17 +20,6 @@ def test_create_border():
     assert border == "+------+\n"
 
 
-def test_existing_section():
-    """Тест наличия данных для подключения"""
-    # params = config("../database.ini") # Строка для теста конкретного файла
-    params = config()  # Строка для теста pytest --cov
-
-    assert "host" in params
-    assert "port" in params
-    assert "user" in params
-    assert "password" in params
-
-
 def test_non_existing_file():
     """Тест отсутствия файла"""
 
